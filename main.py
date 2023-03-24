@@ -1,29 +1,28 @@
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
-import numpy as np
 
 # Load .txt file
 try:
-    with open('my_dataset.txt', 'r') as file:
-        my_dataset = file.read()
+    with open('api_data.txt', 'r') as file:
+        api_data = file.read()
 
 except FileNotFoundError:
-    print("The specified file does not exist.")
+    print("This file doesnt exist")
 
 # Turn .txt into json object
-my_dataset = json.loads(my_dataset)
-activities = pd.json_normalize(my_dataset)
+api_data = json.loads(api_data)
+events = pd.json_normalize(api_data)
 
 # remove all activities from the dataset which aren't bike rides
-activities = activities.drop(activities[activities.type != "Ride"].index)
+events = events.drop(events[events.type != "Ride"].index)
 
 # graph data for distance against max speed
-activities.plot(kind='scatter', x='distance', y='average_speed', color='blue')
+events.plot(kind='scatter', x='distance', y='average_speed', color='blue')
 plt.show()
 
 # graph data for distance against average speed
-activities.plot(kind='scatter', x='distance', y='max_speed', color='red')
+events.plot(kind='scatter', x='distance', y='max_speed', color='red')
 plt.show()
 print()
 

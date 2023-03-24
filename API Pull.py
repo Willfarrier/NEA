@@ -13,21 +13,18 @@ payload = {
     'f': 'json'
 }
 
-print("Requesting Token...\n")
 res = requests.post(auth_url, data=payload, verify=False)
 access_token = res.json()['access_token']
 print("Access Token = {}\n".format(access_token))
 
 header = {'Authorization': 'Bearer ' + access_token}
 param = {'per_page': 200, 'page': 1}
-my_dataset = requests.get(activites_url, headers=header, params=param).json()
-
-print(my_dataset)
+api_data = requests.get(activites_url, headers=header, params=param).json()
 
 import json
 
-my_dataset = json.dumps(my_dataset)
+my_dataset = json.dumps(api_data)
 
-with open('my_dataset.txt', 'a') as file:
-    for item in my_dataset:
+with open('api_data.txt', 'ab') as file:
+    for item in api_data:
         file.write(item)
