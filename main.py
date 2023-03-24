@@ -15,6 +15,7 @@ except FileNotFoundError:
 my_dataset = json.loads(my_dataset)
 activities = pd.json_normalize(my_dataset)
 
+# remove all activities from the dataset which aren't bike rides
 activities = activities.drop(activities[activities.type != "Ride"].index)
 
 # graph data for distance against max speed
