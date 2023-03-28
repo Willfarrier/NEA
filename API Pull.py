@@ -1,5 +1,6 @@
 import requests
 import urllib3
+import json
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 auth_url = "https://www.strava.com/oauth/token"
@@ -7,7 +8,7 @@ activites_url = "https://www.strava.com/api/v3/athlete/activities"
 
 payload = {
     'client_id': "97907",
-    'client_secret': 'c2e2d28809daf87fff1ec2a629bc556cbba5e3ad',
+    'client_secret': '11b7e72f80d8e6521742346523a26530901e84ac',
     'refresh_token': '3478a5154f912cfc26fab87962d5f50c9705a8f0',
     'grant_type': "refresh_token",
     'f': 'json'
@@ -22,12 +23,10 @@ header = {'Authorization': 'Bearer ' + access_token}
 param = {'per_page': 200, 'page': 1}
 api_data = requests.get(activites_url, headers=header, params=param).json()
 
-print(api_data)
+api_data = json.dumps(api_data)
+client_id = payload['client_id']
 
-import json
-
-my_dataset = json.dumps(api_data)
-
-with open('api_data.txt', 'ab') as file:
+title = 'api_data' + client_id + '.txt'
+with open(title, 'ab') as file:
     for item in api_data:
-        file.write(item)
+        file.write(item.encode())

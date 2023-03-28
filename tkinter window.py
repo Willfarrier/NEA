@@ -5,22 +5,15 @@ import matplotlib.pyplot as plt
 
 # Login function when user presses button
 def login():
-    username = username_entry.get()
-    password = password_entry.get()
-    if username == "admin" and password == "password":
-        message_label.config(text="Login successful!", command=retrieve(username))
-    else:
-        message_label.config(text="Login failed. Please try again.")
-
-def retrieve(client_id):
+    username = ClientID_entry.get()
     try:
-        with open('api_data.txt', 'r') as file:
+        title = 'api_data' + username + '.txt'
+        with open(title, 'r') as file:
             api_data = file.read()
-            create_graphs(api_data)
-
+            message_label.config(text="Login successful!", command=create_graphs(api_data))
     except FileNotFoundError:
         print("This file doesnt exist")
-
+        message_label.config(text="Login failed. Please try again.")
 def create_graphs(api_data):
     # Turn .txt into json object
     api_data = json.loads(api_data)
@@ -39,17 +32,15 @@ def create_graphs(api_data):
     print()
 
 
+
+
 # create the tkinter login window
 window = tk.Tk()
 window.title("Login")
-username_label = tk.Label(window, text="Username:")
-username_label.pack()
-username_entry = tk.Entry(window)
-username_entry.pack()
-password_label = tk.Label(window, text="Password:")
-password_label.pack()
-password_entry = tk.Entry(window, show="*")
-password_entry.pack()
+ClientID_label = tk.Label(window, text="ClientID:")
+ClientID_label.pack()
+ClientID_entry = tk.Entry(window, show="*")
+ClientID_entry.pack()
 login_button = tk.Button(window, text="Login", command=login)
 login_button.pack()
 message_label = tk.Label(window, text="")
