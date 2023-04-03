@@ -8,11 +8,9 @@ import time
 import numpy as np
 import math
 
-
 def clear_window():
     for widgets in window.winfo_children():
         widgets.destroy()
-
 
 # Login function when user presses button
 def bridge(ClientID_entry, ClientID):
@@ -32,7 +30,6 @@ def bridge(ClientID_entry, ClientID):
             main_menu_display(api_data)
     except FileNotFoundError:
         label.config(text="Login failed. Please try again.")
-
 
 def main_menu_display(api_data):
     # Clear Window
@@ -67,7 +64,6 @@ def main_menu_display(api_data):
     averages_average_speed_button = tk.Button(window, text="Elevation Data",
                                               command=lambda: elevation_calculations(api_data))
     averages_average_speed_button.grid(row=4, column=1)
-
 
 def average_speed_calculations(api_data):
     # Clear window
@@ -495,7 +491,8 @@ def api_pull(ClientID_entry, Client_Secret_entry, Refresh_Token_entry):
         session.verify = False
         session.headers.update({'f': 'json'})
 
-        inputs = {'client_id': str(ClientID), 'client_secret': str(Client_Secret), 'refresh_token': str(Refresh_Token), 'grant_type': 'refresh_token',}
+        inputs = {'client_id': str(ClientID), 'client_secret': str(Client_Secret), 'refresh_token': str(Refresh_Token),
+                  'grant_type': 'refresh_token', }
         response = session.post(authorise, json=inputs)
         response.raise_for_status()
         access_token = response.json()['access_token']
@@ -516,11 +513,20 @@ def api_pull(ClientID_entry, Client_Secret_entry, Refresh_Token_entry):
     api_data = json.dumps(api_data)
     client_id = inputs['client_id']
 
-    title = 'api_data' + client_id + '.txt'
-    with open(title, 'ab') as file:
-        for item in api_data:
-            file.write(item.encode())
-    bridge("", client_id)
+    try:
+        title = 'api_data' + client_id + '.txt'
+        with open(title, "w") as file:
+            file.write("")
+        with open(title, 'ab') as file:
+            for item in api_data:
+                file.write(item.encode())
+        bridge("", client_id)
+    except FileNotFoundError:
+        title = 'api_data' + client_id + '.txt'
+        with open(title, 'ab') as file:
+            for item in api_data:
+                file.write(item.encode())
+        bridge("", client_id)
 
 # start the tkinter event loop
 window = tk.Tk()
