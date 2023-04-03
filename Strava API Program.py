@@ -8,9 +8,11 @@ import time
 import numpy as np
 import math
 
+
 def clear_window():
     for widgets in window.winfo_children():
         widgets.destroy()
+
 
 # Login function when user presses button
 def bridge(ClientID_entry, ClientID):
@@ -30,6 +32,7 @@ def bridge(ClientID_entry, ClientID):
             main_menu_display(api_data)
     except FileNotFoundError:
         label.config(text="Login failed. Please try again.")
+
 
 def main_menu_display(api_data):
     # Clear Window
@@ -65,6 +68,7 @@ def main_menu_display(api_data):
                                               command=lambda: elevation_calculations(api_data))
     averages_average_speed_button.grid(row=4, column=1)
 
+
 def average_speed_calculations(api_data):
     # Clear window
     clear_window()
@@ -88,7 +92,6 @@ def average_speed_calculations(api_data):
 
     variance = (values_squared / length) - (mean * mean)
     standard_dev = math.sqrt(variance)
-
     array = sorted(array)
 
     Q1 = array[length // 4]
@@ -446,8 +449,11 @@ def login():
 def start():
     clear_window()
     window.title("Strava API Program")
-    Opening_label = tk.Label(window, text="Have you already registered your API details?")
-    Opening_label.pack()
+    opening_label = tk.Label(window, text="Have you already registered your API details?")
+    opening_label.pack()
+    alternative_label = tk.Label(window,
+                                 text="(Select 'No' if more activities have been completed since last logging in)")
+    alternative_label.pack()
     Login_button = tk.Button(window, text="Yes", command=lambda: login())
     Login_button.pack()
     API_Register_buton = tk.Button(window, text="No", command=lambda: api_pull_gui())
@@ -527,6 +533,7 @@ def api_pull(ClientID_entry, Client_Secret_entry, Refresh_Token_entry):
             for item in api_data:
                 file.write(item.encode())
         bridge("", client_id)
+
 
 # start the tkinter event loop
 window = tk.Tk()
